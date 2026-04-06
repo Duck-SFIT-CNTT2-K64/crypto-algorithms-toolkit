@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>An Toàn Bảo Mật Thông Tin - Nhóm 5</title>
+    <title>ATBMTT - Nhóm 5</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -420,15 +420,15 @@
             <p>Nhóm 5</p>
         </div>
         <div class="nav">
-            <button class="nav-btn active" onclick="openTab(0)"><i class="fas fa-shuffle"></i>Mã hóa Hoán vị<span
+                <button class="nav-btn active" onclick="openTab(0)"><i class="fas fa-shuffle"></i>Mã hóa Cổ điển<span
                     class="badge">Bài 1</span></button>
-            <button class="nav-btn" onclick="openTab(1)"><i class="fas fa-superscript"></i>Lũy thừa Modulo<span
+                <button class="nav-btn" onclick="openTab(1)"><i class="fas fa-superscript"></i>Modulo Euler<span
                     class="badge">Bài 2</span></button>
-            <button class="nav-btn" onclick="openTab(2)"><i class="fas fa-pen-nib"></i>Chữ ký DSA<span class="badge">Bài
+                <button class="nav-btn" onclick="openTab(2)"><i class="fas fa-pen-nib"></i>DSA<span class="badge">Bài
                     3</span></button>
-            <button class="nav-btn" onclick="openTab(3)"><i class="fas fa-lock"></i>Mã hóa AES<span class="badge">Bài
+                <button class="nav-btn" onclick="openTab(3)"><i class="fas fa-lock"></i>AES-128<span class="badge">Bài
                     4</span></button>
-            <button class="nav-btn" onclick="openTab(4)"><i class="fas fa-layer-group"></i>Kho bài C++ đầy đủ<span class="badge">Mở rộng</span></button>
+                <button class="nav-btn" onclick="openTab(4)"><i class="fas fa-layer-group"></i>Kho bài C++<span class="badge">Mở rộng</span></button>
         </div>
     </div>
 
@@ -437,15 +437,15 @@
         <div class="tab active" id="tab0">
             <div class="card">
                 <div class="card-header">
-                    <h2><span class="num">01.</span> Mã hóa Cổ điển (Khóa K nguyên)</h2>
+                    <h2><span class="num">01.</span> Mã hóa Cổ điển</h2>
                     <p>Hỗ trợ các hệ mã cổ điển dùng khóa K là một số (Caesar, Hoán vị cột).</p>
                 </div>
                 
                 <div class="field" style="margin-bottom: 16px;">
                     <label>Chọn thuật toán Mã hóa</label>
                     <select id="p1-type" style="cursor: pointer; background-color: #f8fafc; font-weight: 600;">
-                        <option value="caesar">1. Mã hóa Caesar (Dịch vòng K bước)</option>
-                        <option value="columnar">2. Hoán vị cột đơn giản (Viết thành K cột, đọc dọc)</option>
+                        <option value="caesar">1. Caesar</option>
+                        <option value="columnar">2. Hoán vị cột</option>
                     </select>
                 </div>
 
@@ -482,7 +482,7 @@
         <div class="tab" id="tab1">
             <div class="card">
                 <div class="card-header">
-                    <h2><span class="num">02.</span> Lũy thừa Modulo - Định lý Euler</h2>
+                    <h2><span class="num">02.</span> Lũy thừa Modulo</h2>
                     <p>Tính b = a<sup>m</sup> mod n sử dụng định lý Euler: nếu gcd(a,n)=1 thì a<sup>φ(n)</sup> ≡ 1 (mod
                         n), do đó a<sup>m</sup> ≡ a<sup>m mod φ(n)</sup> (mod n).</p>
                 </div>
@@ -510,7 +510,7 @@
         <div class="tab" id="tab2">
             <div class="card">
                 <div class="card-header">
-                    <h2><span class="num">03.</span> Chữ ký điện tử DSA</h2>
+                    <h2><span class="num">03.</span> Chữ ký DSA</h2>
                     <p>Tạo và xác minh chữ ký số DSA. Tính khóa công khai y<sub>A</sub>, tạo chữ ký (r,s), và xác minh
                         chữ ký.</p>
                 </div>
@@ -549,7 +549,7 @@
         <div class="tab" id="tab3">
             <div class="card">
                 <div class="card-header">
-                    <h2><span class="num">04.</span> Mã hóa AES-128</h2>
+                    <h2><span class="num">04.</span> AES-128</h2>
                     <p>Mã hóa và giải mã sử dụng chuẩn AES-128 bit. Nhập Plaintext và Key dạng hex (32 ký tự hex = 16
                         bytes).</p>
                 </div>
@@ -584,33 +584,33 @@
         <div class="tab" id="tab4">
             <div class="card">
                 <div class="card-header">
-                    <h2><span class="num">05.</span> Kho bài đầy đủ từ C++</h2>
+                    <h2><span class="num">05.</span> Kho bài C++</h2>
                     <p>Tích hợp toàn bộ bài từ các file C++: Mã hóa cổ điển, Modulo, và Mã hóa công khai. Chọn bài, nhập tham số, nhấn Tính để xem kết quả và các bước.</p>
                 </div>
 
                 <div class="field" style="margin-bottom: 16px;">
                     <label>Chọn bài cần chạy</label>
                     <select id="p5-exercise" style="cursor: pointer; background-color: #f8fafc; font-weight: 600;" onchange="renderExerciseInputs()">
-                        <option value="caesar_cpp">Caesar.cpp - Mã hóa Caesar</option>
-                        <option value="substitution_cpp">MaHoaChuDon.cpp - Mã hóa đơn bảng thay thế</option>
-                        <option value="rail_fence_cpp">MaHoaVi.cpp - Mã hóa hoán vị hàng rào (Rail Fence)</option>
-                        <option value="playfair_cpp">PlayFair.cpp - Mã hóa Playfair</option>
+                        <option value="caesar_cpp">Caesar.cpp - Caesar</option>
+                        <option value="substitution_cpp">MaHoaChuDon.cpp - Đơn bảng</option>
+                        <option value="rail_fence_cpp">MaHoaVi.cpp - Rail Fence</option>
+                        <option value="playfair_cpp">PlayFair.cpp - Playfair</option>
                         <option value="vigenere_autokey_cpp">Vigenere_Autokey.cpp - Vigenere Autokey</option>
-                        <option value="vigenere_repeat_cpp">Vigenere_LapKhoa.cpp - Vigenere lặp khóa</option>
-                        <option value="mod_expr_cpp">BieuThucMODULO.cpp - Biểu thức modulo A1..A5</option>
-                        <option value="primitive_root_cpp">CanNguyenThuyCuaN.cpp - Kiểm tra căn nguyên thủy</option>
-                        <option value="euclid_inverse_cpp">Euclid.cpp - Nghịch đảo modulo bằng Euclid mở rộng</option>
-                        <option value="euler_phi_cpp">Euler.cpp - Hàm Euler phi(n)</option>
-                        <option value="euler_power_cpp">Euler_TinhLuyThua.cpp - Lũy thừa theo Euler</option>
-                        <option value="fermat_power_cpp">Fermat.cpp - Lũy thừa modulo</option>
-                        <option value="square_multiply_cpp">HaBacLuyThua.cpp - Bình phương và nhân</option>
+                        <option value="vigenere_repeat_cpp">Vigenere_LapKhoa.cpp - Vigenere lặp</option>
+                        <option value="mod_expr_cpp">BieuThucMODULO.cpp - Biểu thức modulo</option>
+                        <option value="primitive_root_cpp">CanNguyenThuyCuaN.cpp - Căn nguyên thủy</option>
+                        <option value="euclid_inverse_cpp">Euclid.cpp - Nghịch đảo modulo</option>
+                        <option value="euler_phi_cpp">Euler.cpp - Hàm phi</option>
+                        <option value="euler_power_cpp">Euler_TinhLuyThua.cpp - Lũy thừa Euler</option>
+                        <option value="fermat_power_cpp">Fermat.cpp - Lũy thừa Fermat</option>
+                        <option value="square_multiply_cpp">HaBacLuyThua.cpp - Bình phương nhân</option>
                         <option value="discrete_log_cpp">Logarithm.cpp - Logarit rời rạc</option>
-                        <option value="crt_system_cpp">SoDuTrungHoaGiaiHePT.cpp - CRT giải hệ phương trình</option>
-                        <option value="crt_power_cpp">SoDuTrungHoaTinhLuyThua.cpp - CRT tính a^k mod n</option>
-                        <option value="diffie_hellman_cpp">Diffie_Hellman.cpp - Trao đổi khóa Diffie-Hellman</option>
-                        <option value="elgamal_cpp">ElGamal.cpp - Mã hóa/giải mã ElGamal</option>
-                        <option value="rsa_1_cpp">RSA_1.cpp - RSA biến thể C=M^d mod n</option>
-                        <option value="rsa_2_cpp">RSA_2.cpp - RSA chuẩn C=M^e mod n</option>
+                        <option value="crt_system_cpp">SoDuTrungHoaGiaiHePT.cpp - CRT giải hệ</option>
+                        <option value="crt_power_cpp">SoDuTrungHoaTinhLuyThua.cpp - CRT tính lũy thừa</option>
+                        <option value="diffie_hellman_cpp">Diffie_Hellman.cpp - Diffie-Hellman</option>
+                        <option value="elgamal_cpp">ElGamal.cpp - ElGamal</option>
+                        <option value="rsa_1_cpp">RSA_1.cpp - RSA biến thể</option>
+                        <option value="rsa_2_cpp">RSA_2.cpp - RSA chuẩn</option>
                     </select>
                 </div>
 
