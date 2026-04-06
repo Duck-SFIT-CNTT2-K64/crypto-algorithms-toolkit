@@ -436,37 +436,44 @@
         <div class="tab active" id="tab0">
             <div class="card">
                 <div class="card-header">
-                    <h2><span class="num">01.</span> Mật mã Hoán vị (Permutation Cipher)</h2>
-                    <p>Thay đổi vị trí các ký tự trong bản rõ theo khóa hoán vị. Nhóm 5 - Mã hóa cổ điển.</p>
+                    <h2><span class="num">01.</span> Mã hóa Cổ điển (Khóa K nguyên)</h2>
+                    <p>Hỗ trợ các hệ mã cổ điển dùng khóa K là một số (Caesar, Hoán vị cột).</p>
                 </div>
+                
+                <div class="field" style="margin-bottom: 16px;">
+                    <label>Chọn thuật toán Mã hóa</label>
+                    <select id="p1-type" style="cursor: pointer; background-color: #f8fafc; font-weight: 600;">
+                        <option value="caesar">1. Mã hóa Caesar (Dịch vòng K bước)</option>
+                        <option value="columnar">2. Hoán vị cột đơn giản (Viết thành K cột, đọc dọc)</option>
+                    </select>
+                </div>
+
                 <div class="form-grid cols-2">
                     <div class="field">
-                        <label>Bản rõ (Plaintext)</label>
-                        <input type="text" id="p1-msg" value="INFORMATIONSECURITY">
+                        <label>Bản rõ (Plaintext M)</label>
+                        <input type="text" id="p1-msg" value="TIMEISMONEYTIMEISM">
                     </div>
                     <div class="field">
-                        <label>Khóa hoán vị <small>(các số cách nhau bởi dấu phẩy)</small></label>
-                        <input type="text" id="p1-key" value="3,1,4,2,5">
+                        <label>Khóa (K)</label>
+                        <input type="number" id="p1-key" value="5">
                     </div>
                 </div>
                 <div class="field" style="margin-top:12px">
-                    <label>Ký tự đệm (Padding)</label>
+                    <label>Ký tự đệm (Dùng cho hoán vị cột nếu thiếu)</label>
                     <input type="text" id="p1-pad" value="X" maxlength="1" style="width:60px">
                 </div>
                 <div class="btn-row">
-                    <button class="btn btn-primary" onclick="solvePermutation('enc')"><i class="fas fa-lock"></i>Mã
-                        hóa</button>
-                    <button class="btn btn-secondary" onclick="solvePermutation('dec')"><i
-                            class="fas fa-unlock"></i>Giải mã</button>
+                    <button class="btn btn-primary" onclick="solveClassic('enc')"><i class="fas fa-lock"></i>Mã hóa</button>
+                    <button class="btn btn-secondary" onclick="solveClassic('dec')"><i class="fas fa-unlock"></i>Giải mã</button>
                 </div>
                 <div class="err-msg" id="p1-err"></div>
                 <div class="steps-box" id="p1-steps">
-                    <h4><i class="fas fa-list-ol"></i> Các bước trung gian</h4>
+                    <h4><i class="fas fa-list-ol"></i> Các bước thực hiện</h4>
                     <div id="p1-steps-content"></div>
                 </div>
                 <div class="result-box success" id="p1-result">
-                    <div class="label">Kết quả</div>
-                    <div class="value" id="p1-output"></div>
+                    <div class="label">Kết quả Bản mã (Ciphertext)</div>
+                    <div class="value" id="p1-output" style="font-size: 1.2rem; font-weight: 700; color: #1d4ed8;"></div>
                 </div>
             </div>
         </div>
@@ -585,6 +592,7 @@
         }
 
         // === MATH UTILITIES (BigInt) ===
+        // tính lũy thừa modulo: (base^exp) mod mod
         function modExp(base, exp, mod) {
             let r = 1n;
             base = ((BigInt(base) % BigInt(mod)) + BigInt(mod)) % BigInt(mod);
@@ -598,6 +606,7 @@
             return r;
         }
 
+        // tính nghịch đảo modulo: a^(-1) mod m
         function modInverse(a, m) {
             let [old_r, r] = [BigInt(a), BigInt(m)];
             let [old_s, s] = [1n, 0n];
@@ -610,6 +619,7 @@
             return ((old_s % BigInt(m)) + BigInt(m)) % BigInt(m);
         }
 
+        // tính ước chung lớn nhất (gcd) của a và b
         function gcd(a, b) {
             a = BigInt(a) < 0n ? -BigInt(a) : BigInt(a);
             b = BigInt(b) < 0n ? -BigInt(b) : BigInt(b);
@@ -619,6 +629,7 @@
             return a;
         }
 
+        // kiểm tra xem n có phải là số nguyên tố hay không
         function isPrime(n) {
             n = BigInt(n);
             if (n < 2n) return false;
@@ -630,6 +641,7 @@
             return true;
         }
 
+        // tính hàm Euler Totient φ(n)
         function eulerTotient(n) {
             n = BigInt(n);
             if (n <= 0n) return 0n;
@@ -663,44 +675,64 @@
             document.getElementById(id).classList.add('show');
         }
 
-        // === BÀI 1: PERMUTATION CIPHER ===
-        function solvePermutation(mode) {
+        // === BÀI 1: MÃ HÓA CỔ ĐIỂN (K LÀ SỐ NGUYÊN) ===
+        function solveClassic(mode) {
             hideErr('p1-err');
             let msg = document.getElementById('p1-msg').value.replace(/\s+/g, '').toUpperCase();
-            let keyStr = document.getElementById('p1-key').value.trim();
-            let pad = document.getElementById('p1-pad').value || 'X';
+            let k = parseInt(document.getElementById('p1-key').value);
+            let type = document.getElementById('p1-type').value;
 
-            if (!msg || !keyStr) return showErr('p1-err', 'Vui lòng nhập đủ thông tin!');
+            if (!msg || isNaN(k)) return showErr('p1-err', 'Vui lòng nhập bản rõ và Khóa K là một số!');
 
-            let key = keyStr.split(',').map(Number);
-            let n = key.length;
-            let sorted = [...key].sort((a, b) => a - b);
+            let result = '';
+            let steps = [];
 
-            for (let i = 0; i < n; i++) {
-                if (sorted[i] !== i + 1) return showErr('p1-err', 'Khóa phải là hoán vị của 1..' + n + '!');
-            }
-
-            while (msg.length % n !== 0) msg += pad;
-
-            let steps = [], result = '';
-
-            if (mode === 'enc') {
-                for (let i = 0; i < msg.length; i += n) {
-                    let block = msg.slice(i, i + n);
-                    let cipher = Array(n);
-                    for (let j = 0; j < n; j++) cipher[key[j] - 1] = block[j];
-                    let cb = cipher.join('');
-                    result += cb;
-                    steps.push(`<div class="step">Khối "${block}" → σ(${key}) → "<b>${cb}</b>"</div>`);
+            // 1. THUẬT TOÁN CAESAR
+            if (type === 'caesar') {
+                steps.push(`<div class="step"><b>Thuật toán:</b> Mã hóa Caesar (Dịch vòng K = ${k} bước)</div>`);
+                for (let i = 0; i < msg.length; i++) {
+                    let charCode = msg.charCodeAt(i);
+                    if (charCode >= 65 && charCode <= 90) { // Chỉ xử lý chữ cái A-Z
+                        let newCode;
+                        if (mode === 'enc') {
+                            newCode = ((charCode - 65 + k) % 26) + 65;
+                        } else {
+                            newCode = ((charCode - 65 - k + 260) % 26) + 65;
+                        }
+                        result += String.fromCharCode(newCode);
+                    } else {
+                        result += msg[i]; // Giữ nguyên nếu không phải chữ
+                    }
                 }
-            } else {
-                for (let i = 0; i < msg.length; i += n) {
-                    let block = msg.slice(i, i + n);
-                    let plain = Array(n);
-                    for (let j = 0; j < n; j++) plain[j] = block[key[j] - 1];
-                    let pb = plain.join('');
-                    result += pb;
-                    steps.push(`<div class="step">Khối "${block}" → σ⁻¹(${key}) → "<b>${pb}</b>"</div>`);
+                steps.push(`<div class="step">- Công thức mã hóa: C = (P + K) mod 26</div>`);
+                steps.push(`<div class="step">- Áp dụng: Chữ '${msg[0]}' dịch ${k} bước thành '${result[0]}', chữ '${msg[1]}' thành '${result[1]}'...</div>`);
+            } 
+            // 2. THUẬT TOÁN HOÁN VỊ CỘT (Đơn giản)
+            else if (type === 'columnar') {
+                steps.push(`<div class="step"><b>Thuật toán:</b> Hoán vị cột (Ghi thành K=${k} cột, đọc dọc từ trên xuống)</div>`);
+                let padMsg = msg;
+                let pad = document.getElementById('p1-pad').value || 'X';
+                
+                // Đệm thêm ký tự nếu độ dài không chia hết cho số cột K
+                while (padMsg.length % k !== 0) padMsg += pad;
+
+                if (mode === 'enc') {
+                    let cols = Array.from({length: k}, () => '');
+                    for (let i = 0; i < padMsg.length; i++) {
+                        cols[i % k] += padMsg[i];
+                    }
+                    result = cols.join('');
+                    steps.push(`<div class="step">- Bước 1: Viết bản rõ thành từng hàng, mỗi hàng ${k} ký tự (Đệm thêm '${pad}' nếu thiếu).</div>`);
+                    steps.push(`<div class="step">- Bước 2: Đọc bản mã bằng cách nối các cột lại với nhau.</div>`);
+                } else {
+                    let numRows = padMsg.length / k;
+                    let rows = Array.from({length: numRows}, () => '');
+                    for (let i = 0; i < padMsg.length; i++) {
+                        rows[i % numRows] += padMsg[i];
+                    }
+                    result = rows.join('');
+                    steps.push(`<div class="step">- Bước 1: Viết bản mã thành từng cột, mỗi cột ${numRows} ký tự.</div>`);
+                    steps.push(`<div class="step">- Bước 2: Đọc bản rõ bằng cách nối các hàng lại với nhau.</div>`);
                 }
             }
 
