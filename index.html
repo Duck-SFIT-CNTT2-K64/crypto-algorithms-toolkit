@@ -428,6 +428,7 @@
                     3</span></button>
             <button class="nav-btn" onclick="openTab(3)"><i class="fas fa-lock"></i>Mã hóa AES<span class="badge">Bài
                     4</span></button>
+            <button class="nav-btn" onclick="openTab(4)"><i class="fas fa-layer-group"></i>Kho bài C++ đầy đủ<span class="badge">Mở rộng</span></button>
         </div>
     </div>
 
@@ -576,6 +577,57 @@
                 <div class="result-box success" id="p4-result">
                     <div class="label">Kết quả</div>
                     <div class="value" id="p4-output"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab" id="tab4">
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="num">05.</span> Kho bài đầy đủ từ C++</h2>
+                    <p>Tích hợp toàn bộ bài từ các file C++: Mã hóa cổ điển, Modulo, và Mã hóa công khai. Chọn bài, nhập tham số, nhấn Tính để xem kết quả và các bước.</p>
+                </div>
+
+                <div class="field" style="margin-bottom: 16px;">
+                    <label>Chọn bài cần chạy</label>
+                    <select id="p5-exercise" style="cursor: pointer; background-color: #f8fafc; font-weight: 600;" onchange="renderExerciseInputs()">
+                        <option value="caesar_cpp">Caesar.cpp - Mã hóa Caesar</option>
+                        <option value="substitution_cpp">MaHoaChuDon.cpp - Mã hóa đơn bảng thay thế</option>
+                        <option value="rail_fence_cpp">MaHoaVi.cpp - Mã hóa hoán vị hàng rào (Rail Fence)</option>
+                        <option value="playfair_cpp">PlayFair.cpp - Mã hóa Playfair</option>
+                        <option value="vigenere_autokey_cpp">Vigenere_Autokey.cpp - Vigenere Autokey</option>
+                        <option value="vigenere_repeat_cpp">Vigenere_LapKhoa.cpp - Vigenere lặp khóa</option>
+                        <option value="mod_expr_cpp">BieuThucMODULO.cpp - Biểu thức modulo A1..A5</option>
+                        <option value="primitive_root_cpp">CanNguyenThuyCuaN.cpp - Kiểm tra căn nguyên thủy</option>
+                        <option value="euclid_inverse_cpp">Euclid.cpp - Nghịch đảo modulo bằng Euclid mở rộng</option>
+                        <option value="euler_phi_cpp">Euler.cpp - Hàm Euler phi(n)</option>
+                        <option value="euler_power_cpp">Euler_TinhLuyThua.cpp - Lũy thừa theo Euler</option>
+                        <option value="fermat_power_cpp">Fermat.cpp - Lũy thừa modulo</option>
+                        <option value="square_multiply_cpp">HaBacLuyThua.cpp - Bình phương và nhân</option>
+                        <option value="discrete_log_cpp">Logarithm.cpp - Logarit rời rạc</option>
+                        <option value="crt_system_cpp">SoDuTrungHoaGiaiHePT.cpp - CRT giải hệ phương trình</option>
+                        <option value="crt_power_cpp">SoDuTrungHoaTinhLuyThua.cpp - CRT tính a^k mod n</option>
+                        <option value="diffie_hellman_cpp">Diffie_Hellman.cpp - Trao đổi khóa Diffie-Hellman</option>
+                        <option value="elgamal_cpp">ElGamal.cpp - Mã hóa/giải mã ElGamal</option>
+                        <option value="rsa_1_cpp">RSA_1.cpp - RSA biến thể C=M^d mod n</option>
+                        <option value="rsa_2_cpp">RSA_2.cpp - RSA chuẩn C=M^e mod n</option>
+                    </select>
+                </div>
+
+                <div id="p5-inputs" class="form-grid cols-3"></div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" onclick="solveExerciseCppPack()"><i class="fas fa-calculator"></i>Tính bài đã chọn</button>
+                </div>
+
+                <div class="err-msg" id="p5-err"></div>
+                <div class="steps-box" id="p5-steps">
+                    <h4><i class="fas fa-list-ol"></i> Các bước chi tiết</h4>
+                    <div id="p5-steps-content"></div>
+                </div>
+                <div class="result-box success" id="p5-result">
+                    <div class="label">Kết quả</div>
+                    <div class="value" id="p5-output"></div>
                 </div>
             </div>
         </div>
@@ -1168,6 +1220,588 @@
             document.getElementById('p4-output').innerHTML = `<b>${out.result}</b>`;
             showResult('p4-result');
         }
+
+        // === BÀI 5: TỔNG HỢP TOÀN BỘ FILE C++ ===
+        const CPP_EXERCISES = {
+            caesar_cpp: {
+                title: 'Caesar.cpp',
+                fields: [
+                    { id: 'M', label: 'Thông điệp M', value: 'NOROSEWITHOUTATH' },
+                    { id: 'K', label: 'Khóa K', value: '8' }
+                ]
+            },
+            substitution_cpp: {
+                title: 'MaHoaChuDon.cpp',
+                fields: [
+                    { id: 'M', label: 'Thông điệp M', value: 'AWOMANGIVESANDFO' },
+                    { id: 'K', label: 'Khóa K (26 ký tự)', value: 'THLEYNPSXADWKFUBOGMQVJRCIZ' }
+                ]
+            },
+            rail_fence_cpp: {
+                title: 'MaHoaVi.cpp',
+                fields: [
+                    { id: 'M', label: 'Thông điệp M', value: 'ABADBEGINNINGMAKES' },
+                    { id: 'K', label: 'Khóa K', value: '9' }
+                ]
+            },
+            playfair_cpp: {
+                title: 'PlayFair.cpp',
+                fields: [
+                    { id: 'M', label: 'Thông điệp M', value: 'THETRUTHWILLOU' },
+                    { id: 'K', label: 'Khóa K', value: 'THEDIEIS' }
+                ]
+            },
+            vigenere_autokey_cpp: {
+                title: 'Vigenere_Autokey.cpp',
+                fields: [
+                    { id: 'M', label: 'Thông điệp M', value: 'MONEYMAKESTHE' },
+                    { id: 'K', label: 'Khóa K', value: 'YOUREON' }
+                ]
+            },
+            vigenere_repeat_cpp: {
+                title: 'Vigenere_LapKhoa.cpp',
+                fields: [
+                    { id: 'M', label: 'Thông điệp M', value: 'MONEYMAKESTHE' },
+                    { id: 'K', label: 'Khóa K', value: 'YOUREON' }
+                ]
+            },
+            mod_expr_cpp: {
+                title: 'BieuThucMODULO.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '37' },
+                    { id: 'b', label: 'b', value: '97' },
+                    { id: 'x', label: 'x', value: '581' },
+                    { id: 'y', label: 'y', value: '364' },
+                    { id: 'n', label: 'n', value: '127' }
+                ]
+            },
+            primitive_root_cpp: {
+                title: 'CanNguyenThuyCuaN.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '5' },
+                    { id: 'n', label: 'n', value: '463' }
+                ]
+            },
+            euclid_inverse_cpp: {
+                title: 'Euclid.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '1885' },
+                    { id: 'n', label: 'n', value: '6563' }
+                ]
+            },
+            euler_phi_cpp: {
+                title: 'Euler.cpp',
+                fields: [
+                    { id: 'n', label: 'n', value: '3992' }
+                ]
+            },
+            euler_power_cpp: {
+                title: 'Euler_TinhLuyThua.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '23' },
+                    { id: 'm', label: 'm', value: '3885' },
+                    { id: 'n', label: 'n', value: '395' }
+                ]
+            },
+            fermat_power_cpp: {
+                title: 'Fermat.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '439' },
+                    { id: 'm', label: 'm', value: '760' },
+                    { id: 'n', label: 'n', value: '6269' }
+                ]
+            },
+            square_multiply_cpp: {
+                title: 'HaBacLuyThua.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '397' },
+                    { id: 'm', label: 'm', value: '6329' },
+                    { id: 'n', label: 'n', value: '6329' }
+                ]
+            },
+            discrete_log_cpp: {
+                title: 'Logarithm.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '3' },
+                    { id: 'b', label: 'b', value: '5' },
+                    { id: 'n', label: 'n', value: '19' }
+                ]
+            },
+            crt_system_cpp: {
+                title: 'SoDuTrungHoaGiaiHePT.cpp',
+                fields: [
+                    { id: 'm1', label: 'm1', value: '17' },
+                    { id: 'm2', label: 'm2', value: '19' },
+                    { id: 'm3', label: 'm3', value: '11' },
+                    { id: 'a1', label: 'a1', value: '5' },
+                    { id: 'a2', label: 'a2', value: '16' },
+                    { id: 'a3', label: 'a3', value: '3' }
+                ]
+            },
+            crt_power_cpp: {
+                title: 'SoDuTrungHoaTinhLuyThua.cpp',
+                fields: [
+                    { id: 'a', label: 'a', value: '227' },
+                    { id: 'k', label: 'k', value: '80' },
+                    { id: 'n', label: 'n', value: '60421' }
+                ]
+            },
+            diffie_hellman_cpp: {
+                title: 'Diffie_Hellman.cpp',
+                fields: [
+                    { id: 'q', label: 'q', value: '6947' },
+                    { id: 'a', label: 'a', value: '5' },
+                    { id: 'xA', label: 'xA', value: '395' },
+                    { id: 'xB', label: 'xB', value: '338' }
+                ]
+            },
+            elgamal_cpp: {
+                title: 'ElGamal.cpp',
+                fields: [
+                    { id: 'q', label: 'q', value: '6827' },
+                    { id: 'a', label: 'a', value: '5' },
+                    { id: 'xA', label: 'Khóa riêng xA', value: '307' },
+                    { id: 'k', label: 'Số ngẫu nhiên k', value: '919' },
+                    { id: 'M', label: 'Bản rõ M', value: '474' }
+                ]
+            },
+            rsa_1_cpp: {
+                title: 'RSA_1.cpp',
+                fields: [
+                    { id: 'p', label: 'p', value: '43' },
+                    { id: 'q', label: 'q', value: '47' },
+                    { id: 'e', label: 'e', value: '67' },
+                    { id: 'M', label: 'M', value: '59' }
+                ]
+            },
+            rsa_2_cpp: {
+                title: 'RSA_2.cpp',
+                fields: [
+                    { id: 'p', label: 'p', value: '43' },
+                    { id: 'q', label: 'q', value: '47' },
+                    { id: 'e', label: 'e', value: '67' },
+                    { id: 'M', label: 'M', value: '59' }
+                ]
+            }
+        };
+
+        function p5Num(id) {
+            return BigInt(document.getElementById('p5-' + id).value.trim());
+        }
+
+        function p5Str(id) {
+            return document.getElementById('p5-' + id).value;
+        }
+
+        function factorUnique(n) {
+            let x = BigInt(n);
+            const out = [];
+            for (let i = 2n; i * i <= x; i++) {
+                if (x % i === 0n) {
+                    out.push(i);
+                    while (x % i === 0n) x /= i;
+                }
+            }
+            if (x > 1n) out.push(x);
+            return out;
+        }
+
+        function factorAll(n) {
+            let x = BigInt(n);
+            const out = [];
+            for (let i = 2n; i * i <= x; i++) {
+                while (x % i === 0n) {
+                    out.push(i);
+                    x /= i;
+                }
+            }
+            if (x > 1n) out.push(x);
+            return out;
+        }
+
+        function crtSolve(remainders, moduli) {
+            const M = moduli.reduce((acc, m) => acc * m, 1n);
+            let result = 0n;
+            for (let i = 0; i < moduli.length; i++) {
+                const Mi = M / moduli[i];
+                const inv = modInverse(Mi, moduli[i]);
+                result += remainders[i] * Mi * inv;
+            }
+            return ((result % M) + M) % M;
+        }
+
+        function renderExerciseInputs() {
+            const key = document.getElementById('p5-exercise').value;
+            const cfg = CPP_EXERCISES[key];
+            const html = cfg.fields.map(f => `
+                <div class="field">
+                    <label>${f.label}</label>
+                    <input type="text" id="p5-${f.id}" value="${String(f.value).replace(/"/g, '&quot;')}">
+                </div>
+            `).join('');
+            document.getElementById('p5-inputs').innerHTML = html;
+            document.getElementById('p5-result').style.display = 'none';
+            document.getElementById('p5-steps').classList.remove('show');
+            hideErr('p5-err');
+        }
+
+        function solveExerciseCppPack() {
+            hideErr('p5-err');
+            try {
+                const ex = document.getElementById('p5-exercise').value;
+                let out = '';
+                const steps = [];
+
+                if (ex === 'caesar_cpp') {
+                    const M = p5Str('M');
+                    const K = Number(p5Str('K'));
+                    let C = '';
+                    for (const ch of M) {
+                        if (/[A-Za-z]/.test(ch)) {
+                            const base = ch >= 'A' && ch <= 'Z' ? 65 : 97;
+                            const code = ((ch.charCodeAt(0) - base + K) % 26 + 26) % 26 + base;
+                            C += String.fromCharCode(code);
+                        } else {
+                            C += ch;
+                        }
+                    }
+                    steps.push(`<div class="step">C = (M + K) mod 26 với K = ${K}</div>`);
+                    out = `Thông điệp đã mã hóa (C): ${C}`;
+                }
+
+                if (ex === 'substitution_cpp') {
+                    const M = p5Str('M');
+                    const K = p5Str('K').toUpperCase();
+                    if (K.length !== 26) throw new Error('Khóa thay thế phải đủ 26 ký tự.');
+                    let C = '';
+                    for (const ch of M) {
+                        if (/[A-Za-z]/.test(ch)) {
+                            const up = ch.toUpperCase();
+                            C += K[up.charCodeAt(0) - 65];
+                        } else {
+                            C += ch;
+                        }
+                    }
+                    steps.push('<div class="step">Thay mỗi ký tự bởi phần tử tương ứng trong khóa 26 chữ cái.</div>');
+                    out = `Thông điệp đã mã hóa (C): ${C}`;
+                }
+
+                if (ex === 'rail_fence_cpp') {
+                    const M = p5Str('M');
+                    const K = Number(p5Str('K'));
+                    if (K <= 1) {
+                        out = `Thông điệp đã mã hóa (C): ${M}`;
+                    } else {
+                        const rails = Array.from({ length: K }, () => '');
+                        let direction = 1;
+                        let row = 0;
+                        for (const ch of M) {
+                            rails[row] += ch;
+                            row += direction;
+                            if (row === 0 || row === K - 1) direction *= -1;
+                        }
+                        const C = rails.join('');
+                        steps.push(`<div class="step">Ghi theo zig-zag trên ${K} hàng rồi đọc từng hàng.</div>`);
+                        out = `Thông điệp đã mã hóa (C): ${C}`;
+                    }
+                }
+
+                if (ex === 'playfair_cpp') {
+                    const M = p5Str('M');
+                    const K = p5Str('K');
+                    const used = Array(26).fill(false);
+                    used['J'.charCodeAt(0) - 65] = true;
+                    let processedKey = '';
+                    for (const ch0 of K) {
+                        const ch = ch0.toUpperCase();
+                        if (/[A-Z]/.test(ch) && !used[ch.charCodeAt(0) - 65]) {
+                            processedKey += ch;
+                            used[ch.charCodeAt(0) - 65] = true;
+                        }
+                    }
+                    for (let c = 65; c <= 90; c++) {
+                        if (!used[c - 65]) {
+                            processedKey += String.fromCharCode(c);
+                            used[c - 65] = true;
+                        }
+                    }
+                    const matrix = Array.from({ length: 5 }, () => Array(5).fill(''));
+                    let idx = 0;
+                    for (let i = 0; i < 5; i++) {
+                        for (let j = 0; j < 5; j++) {
+                            matrix[i][j] = processedKey[idx++];
+                        }
+                    }
+                    let pm = '';
+                    for (const ch0 of M) {
+                        if (/[A-Za-z]/.test(ch0)) {
+                            let ch = ch0.toUpperCase();
+                            if (ch === 'J') ch = 'I';
+                            pm += ch;
+                        }
+                    }
+                    if (pm.length % 2 !== 0) pm += 'X';
+
+                    function findPos(ch) {
+                        for (let r = 0; r < 5; r++) {
+                            for (let c = 0; c < 5; c++) {
+                                if (matrix[r][c] === ch) return [r, c];
+                            }
+                        }
+                        return [-1, -1];
+                    }
+
+                    let C = '';
+                    for (let i = 0; i < pm.length; i += 2) {
+                        const a = pm[i], b = pm[i + 1];
+                        const [r1, c1] = findPos(a);
+                        const [r2, c2] = findPos(b);
+                        if (r1 === r2) {
+                            C += matrix[r1][(c1 + 1) % 5] + matrix[r2][(c2 + 1) % 5];
+                        } else if (c1 === c2) {
+                            C += matrix[(r1 + 1) % 5][c1] + matrix[(r2 + 1) % 5][c2];
+                        } else {
+                            C += matrix[r1][c2] + matrix[r2][c1];
+                        }
+                    }
+                    steps.push(`<div class="step">Ma trận khóa: ${matrix.map(r => r.join('')).join(' | ')}</div>`);
+                    out = `Thông điệp đã mã hóa (C): ${C}`;
+                }
+
+                if (ex === 'vigenere_autokey_cpp') {
+                    let M = p5Str('M');
+                    let K = p5Str('K');
+                    let C = '';
+                    let keyIndex = 0;
+                    for (const ch of M) {
+                        if (/[A-Za-z]/.test(ch)) {
+                            const base = ch >= 'A' && ch <= 'Z' ? 65 : 97;
+                            const kc = K[keyIndex];
+                            const keyChar = kc >= 'A' && kc <= 'Z' ? kc : String.fromCharCode(kc.charCodeAt(0) - 97 + 65);
+                            const code = ((ch.charCodeAt(0) - base + (keyChar.charCodeAt(0) - 65)) % 26) + base;
+                            C += String.fromCharCode(code);
+                            K += ch;
+                            keyIndex++;
+                        } else {
+                            C += ch;
+                        }
+                    }
+                    steps.push('<div class="step">Autokey: sau mỗi ký tự, nối bản rõ vào cuối khóa.</div>');
+                    out = `Thông điệp đã mã hóa (C): ${C}`;
+                }
+
+                if (ex === 'vigenere_repeat_cpp') {
+                    const M = p5Str('M');
+                    const K = p5Str('K');
+                    const keyLength = K.length;
+                    let keyIndex = 0;
+                    let C = '';
+                    for (const ch of M) {
+                        if (/[A-Za-z]/.test(ch)) {
+                            const base = ch >= 'A' && ch <= 'Z' ? 65 : 97;
+                            const kc = K[keyIndex % keyLength];
+                            const keyChar = kc >= 'A' && kc <= 'Z' ? kc : String.fromCharCode(kc.charCodeAt(0) - 97 + 65);
+                            const code = ((ch.charCodeAt(0) - base + (keyChar.charCodeAt(0) - 65)) % 26) + base;
+                            C += String.fromCharCode(code);
+                            keyIndex++;
+                        } else {
+                            C += ch;
+                        }
+                    }
+                    out = `Thông điệp đã mã hóa (C): ${C}`;
+                }
+
+                if (ex === 'mod_expr_cpp') {
+                    const a = p5Num('a');
+                    const b = p5Num('b');
+                    const x = p5Num('x');
+                    const y = p5Num('y');
+                    const n = p5Num('n');
+                    const ax = modExp(a, x, n);
+                    const by = modExp(b, y, n);
+                    const A1 = (ax + by) % n;
+                    const A2 = ((ax - by) % n + n) % n;
+                    const A3 = (ax * by) % n;
+                    const A4 = modInverse(by, n);
+                    const A5 = A4 === -1n ? null : (ax * A4) % n;
+                    out = `a^x mod n = ${ax}<br>b^y mod n = ${by}<br>A1 = ${A1}<br>A2 = ${A2}<br>A3 = ${A3}<br>A4 = ${A4 === -1n ? 'Không tồn tại' : A4}<br>A5 = ${A5 === null ? 'Không hợp lệ' : A5}`;
+                }
+
+                if (ex === 'primitive_root_cpp') {
+                    const a = p5Num('a');
+                    const n = p5Num('n');
+                    const phi = eulerTotient(n);
+                    const factors = factorUnique(phi);
+                    let ok = true;
+                    for (const f of factors) {
+                        if (modExp(a, phi / f, n) === 1n) ok = false;
+                    }
+                    steps.push(`<div class="step">phi(n) = ${phi}, các ước nguyên tố của phi: ${factors.join(', ')}</div>`);
+                    out = ok ? `${a} là căn nguyên thủy của ${n}.` : `${a} không phải là căn nguyên thủy của ${n}.`;
+                }
+
+                if (ex === 'euclid_inverse_cpp') {
+                    const a = p5Num('a');
+                    const n = p5Num('n');
+                    const inv = modInverse(a, n);
+                    const g = gcd(a, n);
+                    out = `gcd(${a}, ${n}) = ${g}<br>${inv === -1n ? 'Nghịch đảo modular không tồn tại' : `Nghịch đảo của ${a} mod ${n} là ${inv}`}`;
+                }
+
+                if (ex === 'euler_phi_cpp') {
+                    const n = p5Num('n');
+                    out = `Giá trị hàm Euler φ(${n}) là: ${eulerTotient(n)}`;
+                }
+
+                if (ex === 'euler_power_cpp') {
+                    const a = p5Num('a');
+                    const m = p5Num('m');
+                    const n = p5Num('n');
+                    const phi = eulerTotient(n);
+                    const mr = m % phi;
+                    const b = modExp(a, mr, n);
+                    steps.push(`<div class="step">phi(${n}) = ${phi}, m mod phi(n) = ${mr}</div>`);
+                    out = `Kết quả: ${b}`;
+                }
+
+                if (ex === 'fermat_power_cpp') {
+                    const a = p5Num('a');
+                    const m = p5Num('m');
+                    const n = p5Num('n');
+                    out = `Kết quả: ${modExp(a, m, n)}`;
+                }
+
+                if (ex === 'square_multiply_cpp') {
+                    const a = p5Num('a');
+                    let m = p5Num('m');
+                    const n = p5Num('n');
+                    let result = 1n;
+                    let base = ((a % n) + n) % n;
+                    let step = 1;
+                    while (m > 0n) {
+                        if (m % 2n === 1n) result = (result * base) % n;
+                        steps.push(`<div class="step">Bước ${step}: m=${m}, result=${result}, a=${base}</div>`);
+                        base = (base * base) % n;
+                        m /= 2n;
+                        step++;
+                    }
+                    out = `Kết quả: b = ${result}`;
+                }
+
+                if (ex === 'discrete_log_cpp') {
+                    const a = p5Num('a');
+                    const b = p5Num('b');
+                    const n = p5Num('n');
+                    const m = BigInt(Math.ceil(Math.sqrt(Number(n))));
+                    const map = new Map();
+                    let current = 1n;
+                    for (let j = 0n; j < m; j++) {
+                        map.set(current.toString(), j);
+                        current = (current * a) % n;
+                    }
+                    const factor = modExp(a, n - m - 1n, n);
+                    current = b;
+                    let k = -1n;
+                    for (let i = 0n; i < m; i++) {
+                        if (map.has(current.toString())) {
+                            k = i * m + map.get(current.toString());
+                            break;
+                        }
+                        current = (current * factor) % n;
+                    }
+                    out = k === -1n ? `Không tìm thấy k thỏa mãn ${a}^k ≡ ${b} (mod ${n}).` : `Giá trị k thỏa mãn: ${k}`;
+                }
+
+                if (ex === 'crt_system_cpp') {
+                    const m1 = p5Num('m1'), m2 = p5Num('m2'), m3 = p5Num('m3');
+                    const a1 = p5Num('a1'), a2 = p5Num('a2'), a3 = p5Num('a3');
+                    const x = crtSolve([a1, a2, a3], [m1, m2, m3]);
+                    out = `Giá trị x thỏa mãn hệ phương trình là: ${x}`;
+                }
+
+                if (ex === 'crt_power_cpp') {
+                    const a = p5Num('a');
+                    const k = p5Num('k');
+                    const n = p5Num('n');
+                    const factors = factorAll(n);
+                    const rem = factors.map(f => modExp(a, k, f));
+                    const b = crtSolve(rem, factors);
+                    steps.push(`<div class="step">Phân tích n thành thừa số nguyên tố: ${factors.join(' × ')}</div>`);
+                    out = `Kết quả: ${b}`;
+                }
+
+                if (ex === 'diffie_hellman_cpp') {
+                    const q = p5Num('q');
+                    const a = p5Num('a');
+                    const xA = p5Num('xA');
+                    const xB = p5Num('xB');
+                    const yA = modExp(a, xA, q);
+                    const yB = modExp(a, xB, q);
+                    const KA = modExp(yB, xA, q);
+                    const KB = modExp(yA, xB, q);
+                    out = `Khóa công khai của An (yA): ${yA}<br>Khóa công khai của Ba (yB): ${yB}<br>Khóa phiên tính bởi An (K): ${KA}<br>Khóa phiên tính bởi Ba (K): ${KB}<br>${KA === KB ? 'Khóa phiên K được trao đổi thành công.' : 'Có lỗi trong quá trình trao đổi khóa!'}`;
+                }
+
+                if (ex === 'elgamal_cpp') {
+                    const q = p5Num('q');
+                    const a = p5Num('a');
+                    const xA = p5Num('xA');
+                    const k = p5Num('k');
+                    const M = p5Num('M');
+                    const yA = modExp(a, xA, q);
+                    const C1 = modExp(a, k, q);
+                    const Kenc = modExp(yA, k, q);
+                    const C2 = (M * Kenc) % q;
+                    const Kdec = modExp(C1, xA, q);
+                    const Kinv = modInverse(Kdec, q);
+                    if (Kinv === -1n) {
+                        out = 'Không tìm được nghịch đảo modulo. Kiểm tra lại dữ liệu.';
+                    } else {
+                        const Mr = (C2 * Kinv) % q;
+                        out = `PU = {q, a, yA} = {${q}, ${a}, ${yA}}<br>Bản mã (C1, C2) = (${C1}, ${C2})<br>Giải mã M = ${Mr}`;
+                    }
+                }
+
+                if (ex === 'rsa_1_cpp') {
+                    const p = p5Num('p');
+                    const q = p5Num('q');
+                    const e = p5Num('e');
+                    const M = p5Num('M');
+                    const n = p * q;
+                    const phi = (p - 1n) * (q - 1n);
+                    if (gcd(e, phi) !== 1n) throw new Error('e không nguyên tố cùng nhau với phi(n).');
+                    const d = modInverse(e, phi);
+                    const C = modExp(M, d, n);
+                    const recovered = modExp(C, e, n);
+                    out = `PU = (${e}, ${n})<br>PR = (${d}, ${n})<br>C = M^d mod n = ${C}<br>M = C^e mod n = ${recovered}`;
+                }
+
+                if (ex === 'rsa_2_cpp') {
+                    const p = p5Num('p');
+                    const q = p5Num('q');
+                    const e = p5Num('e');
+                    const M = p5Num('M');
+                    const n = p * q;
+                    const phi = (p - 1n) * (q - 1n);
+                    if (M >= n) throw new Error('Điều kiện RSA không thỏa: M phải < n.');
+                    const g = gcd(e, phi);
+                    if (g !== 1n) throw new Error(`Điều kiện RSA không thỏa: gcd(e, phi(n)) = ${g} != 1.`);
+                    const d = modInverse(e, phi);
+                    const C = modExp(M, e, n);
+                    const decrypted = modExp(C, d, n);
+                    out = `n = ${n}, phi(n) = ${phi}<br>PUBLIC KEY: (${e}, ${n})<br>PRIVATE KEY: (${d}, ${n})<br>Ban ma C = ${C}<br>Ban ro giai ma = ${decrypted}`;
+                }
+
+                document.getElementById('p5-steps-content').innerHTML = steps.join('') || '<div class="step">Bài này xuất kết quả trực tiếp theo chương trình C++ gốc.</div>';
+                showSteps('p5-steps');
+                document.getElementById('p5-output').innerHTML = out;
+                showResult('p5-result');
+            } catch (e) {
+                showErr('p5-err', 'Lỗi: ' + e.message);
+            }
+        }
+
+        renderExerciseInputs();
     </script>
 
 </body>
