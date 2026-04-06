@@ -15,25 +15,29 @@
         }
 
         :root {
-            --bg: #0f1117;
-            --card: #1a1d27;
-            --card2: #222633;
-            --border: #2a2e3d;
-            --accent: #6366f1;
-            --accent2: #818cf8;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --green: #22c55e;
-            --green-bg: rgba(34, 197, 94, 0.08);
-            --red: #f43f5e;
-            --red-bg: rgba(244, 63, 94, 0.08);
-            --text: #e2e8f0;
-            --text2: #94a3b8;
+            --bg: #f5f8fc;
+            --bg-accent: #eef4ff;
+            --card: #ffffff;
+            --card2: #f8fafc;
+            --border: #dbe3ef;
+            --accent: #2563eb;
+            --accent2: #1d4ed8;
+            --accent-glow: rgba(37, 99, 235, 0.12);
+            --green: #15803d;
+            --green-bg: rgba(21, 128, 61, 0.08);
+            --red: #dc2626;
+            --red-bg: rgba(220, 38, 38, 0.08);
+            --text: #0f172a;
+            --text2: #475569;
             --text3: #64748b;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.05), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.04), transparent 28%),
+                var(--bg);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -41,25 +45,27 @@
 
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, #1e1b4b 0%, #0f1117 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
             z-index: 10;
+            box-shadow: 8px 0 30px rgba(15, 23, 42, 0.04);
         }
 
         .logo {
             padding: 28px 24px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo h1 {
             font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #818cf8, #c084fc);
+            background: linear-gradient(135deg, #2563eb, #0f766e);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -98,14 +104,14 @@
         }
 
         .nav-btn:hover {
-            background: rgba(99, 102, 241, 0.08);
-            color: var(--text);
+            background: rgba(37, 99, 235, 0.06);
+            color: var(--accent2);
         }
 
         .nav-btn.active {
-            background: var(--accent-glow);
+            background: rgba(37, 99, 235, 0.1);
             color: var(--accent2);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.18);
         }
 
         .nav-btn i {
@@ -157,6 +163,7 @@
             border-radius: 16px;
             padding: 28px;
             margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
         }
 
         .card-header {
@@ -216,7 +223,7 @@
         .field select {
             width: 100%;
             padding: 12px 14px;
-            background: var(--bg);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 10px;
             color: var(--text);
@@ -259,24 +266,25 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent), #7c3aed);
+            background: linear-gradient(135deg, var(--accent), #1d4ed8);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.22);
         }
 
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.28);
         }
 
         .btn-secondary {
-            background: var(--card2);
+            background: #ffffff;
             color: var(--text);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            border-color: var(--accent);
+            border-color: rgba(37, 99, 235, 0.35);
+            background: rgba(37, 99, 235, 0.04);
         }
 
         .result-box {
@@ -293,12 +301,12 @@
 
         .result-box.success {
             background: var(--green-bg);
-            border: 1px solid rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(21, 128, 61, 0.16);
         }
 
         .result-box.error {
             background: var(--red-bg);
-            border: 1px solid rgba(244, 63, 94, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.16);
         }
 
         .result-box .label {
@@ -318,18 +326,20 @@
             font-size: 1rem;
             word-break: break-all;
             padding: 12px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 8px;
             line-height: 1.6;
+            border: 1px solid rgba(148, 163, 184, 0.2);
         }
 
         .steps-box {
             margin-top: 16px;
-            background: var(--card2);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
             display: none;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03);
         }
 
         .steps-box.show {
@@ -380,6 +390,7 @@
                 position: relative;
                 border-right: none;
                 border-bottom: 1px solid var(--border);
+                box-shadow: none;
             }
 
             .main {
